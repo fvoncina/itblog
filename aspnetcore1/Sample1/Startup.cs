@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Data.SqlClient;
 
 namespace Sample1
 {
@@ -23,6 +24,15 @@ namespace Sample1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // agrego SqlConnection
+            services.AddScoped(sp =>
+            {
+                var dsn = Configuration["DSN"];
+                var cn = new SqlConnection(dsn);
+                cn.Open();
+                return cn;
+            });
+
             services.AddMvc();
         }
 
